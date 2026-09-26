@@ -15,3 +15,5 @@
 *.suo
 
 ask-test-error.txt
+
+!.env.example
