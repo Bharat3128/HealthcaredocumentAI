@@ -6,9 +6,24 @@ using Healthcare.Api.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddScoped<
-    Healthcare.Api.Storage.IFileStorageService,
-    Healthcare.Api.Storage.LocalFileStorageService>();
+builder.Services.Configure<Healthcare.Api.Options.AzureStorageOptions>(
+    builder.Configuration.GetSection("AzureStorage"));
+
+var useAzureStorage =
+    builder.Configuration.GetValue<bool>("AzureStorage:Enabled");
+
+if (useAzureStorage)
+{
+    builder.Services.AddScoped<
+        Healthcare.Api.Storage.IFileStorageService,
+        Healthcare.Api.Storage.AzureBlobStorageService>();
+}
+else
+{
+    builder.Services.AddScoped<
+        Healthcare.Api.Storage.IFileStorageService,
+        Healthcare.Api.Storage.LocalFileStorageService>();
+}
 
 builder.Services
     .AddHealthChecks()
@@ -149,6 +164,7 @@ app.Run();
 
 
 public partial class Program { }
+
 
 
 
