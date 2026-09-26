@@ -1,0 +1,11 @@
+**/bin/
+**/obj/
+.git/
+.vs/
+.vscode/
+Uploads/
+*.db
+*.db-shm
+*.db-wal
+ask-test-error.txt
+README.md

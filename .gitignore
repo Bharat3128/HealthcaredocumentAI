@@ -1,0 +1,17 @@
+**/bin/
+**/obj/
+.vs/
+.vscode/
+
+**/Uploads/
+
+*.db
+*.db-shm
+*.db-wal
+
+.env
+.env.*
+*.user
+*.suo
+
+ask-test-error.txt
