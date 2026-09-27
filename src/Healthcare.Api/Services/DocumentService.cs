@@ -11,7 +11,7 @@ public class DocumentService
     private readonly Healthcare.Api.Storage.IFileStorageService _fileStorageService;
 private readonly IWebHostEnvironment _environment;
     private readonly HealthcareDbContext _dbContext;
-    private readonly OcrService _ocrService;
+    private readonly IDocumentTextExtractor _documentTextExtractor;
     private readonly DocumentClassificationService _classificationService;
     private readonly StructuredExtractionService _structuredExtractionService;
     private readonly DocumentValidationService _validationService;
@@ -21,7 +21,7 @@ private readonly IWebHostEnvironment _environment;
     public DocumentService(
         IWebHostEnvironment environment,
         HealthcareDbContext dbContext,
-        OcrService ocrService,
+        IDocumentTextExtractor documentTextExtractor,
         DocumentClassificationService classificationService,
         StructuredExtractionService structuredExtractionService,
         DocumentValidationService validationService,
@@ -33,7 +33,7 @@ private readonly IWebHostEnvironment _environment;
         _fileStorageService = fileStorageService;
 _environment = environment;
         _dbContext = dbContext;
-        _ocrService = ocrService;
+        _documentTextExtractor = documentTextExtractor;
         _classificationService = classificationService;
         _structuredExtractionService = structuredExtractionService;
         _validationService = validationService;
@@ -172,7 +172,7 @@ _environment = environment;
                 cancellationToken);
 
         document.ExtractedText =
-            await _ocrService.ExtractTextAsync(
+            await _documentTextExtractor.ExtractTextAsync(
                 storedFile);
 
         document.DocumentType =
@@ -225,6 +225,7 @@ _environment = environment;
         return document;
     }
 }
+
 
 
 

@@ -61,7 +61,24 @@ builder.Services.AddDbContext<HealthcareDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<DocumentService>();
-builder.Services.AddScoped<OcrService>();
+builder.Services.Configure<DocumentIntelligenceOptions>(
+    builder.Configuration.GetSection("DocumentIntelligence"));
+
+var useDocumentIntelligence =
+    builder.Configuration.GetValue<bool>("DocumentIntelligence:Enabled");
+
+if (useDocumentIntelligence)
+{
+    builder.Services.AddScoped<
+        IDocumentTextExtractor,
+        AzureDocumentIntelligenceService>();
+}
+else
+{
+    builder.Services.AddScoped<
+        IDocumentTextExtractor,
+        OcrService>();
+}
 builder.Services.AddScoped<DocumentClassificationService>();
 builder.Services.AddScoped<StructuredExtractionService>();
 builder.Services.AddScoped<DocumentValidationService>();
@@ -164,6 +181,7 @@ app.Run();
 
 
 public partial class Program { }
+
 
 
 

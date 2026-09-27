@@ -3,15 +3,16 @@ using UglyToad.PdfPig;
 
 namespace Healthcare.Api.Services;
 
-public class OcrService
+public class OcrService : IDocumentTextExtractor
 {
-    public Task<string> ExtractTextAsync(Stream stream)
+    public Task<string> ExtractTextAsync(
+        Stream stream,
+        CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+
         if (stream == null || !stream.CanRead)
-        {
-            throw new InvalidDataException(
-                "The PDF stream cannot be read.");
-        }
+            throw new InvalidDataException("The PDF stream cannot be read.");
 
         var extractedText = new StringBuilder();
 
@@ -19,43 +20,40 @@ public class OcrService
 
         foreach (var page in pdfDocument.GetPages())
         {
-            var words = page.GetWords()
-                .Select(word => word.Text);
+            cancellationToken.ThrowIfCancellationRequested();
 
-            extractedText.AppendLine(
-                string.Join(" ", words));
+            var words = page.GetWords().Select(word => word.Text);
+            extractedText.AppendLine(string.Join(" ", words));
         }
 
         var text = extractedText.ToString().Trim();
 
         if (string.IsNullOrWhiteSpace(text))
-        {
             return Task.FromResult(
                 "No readable text was found in this PDF.");
-        }
 
         return Task.FromResult(text);
     }
 
     public async Task<string> ExtractTextAsync(
-        string filePath)
+        string filePath,
+        CancellationToken cancellationToken = default)
     {
         if (!File.Exists(filePath))
-        {
             throw new FileNotFoundException(
                 "The PDF file could not be found.",
                 filePath);
-        }
 
-        await using var stream =
-            new FileStream(
-                filePath,
-                FileMode.Open,
-                FileAccess.Read,
-                FileShare.Read,
-                81920,
-                useAsync: true);
+        await using var stream = new FileStream(
+            filePath,
+            FileMode.Open,
+            FileAccess.Read,
+            FileShare.Read,
+            81920,
+            useAsync: true);
 
-        return await ExtractTextAsync(stream);
+        return await ExtractTextAsync(
+            stream,
+            cancellationToken);
     }
 }
