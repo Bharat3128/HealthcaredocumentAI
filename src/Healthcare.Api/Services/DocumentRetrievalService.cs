@@ -19,11 +19,11 @@ public class SemanticSearchResult
 public class DocumentRetrievalService
 {
     private readonly HealthcareDbContext _dbContext;
-    private readonly EmbeddingService _embeddingService;
+    private readonly IEmbeddingService _embeddingService;
 
     public DocumentRetrievalService(
         HealthcareDbContext dbContext,
-        EmbeddingService embeddingService)
+        IEmbeddingService embeddingService)
     {
         _dbContext = dbContext;
         _embeddingService = embeddingService;
@@ -115,4 +115,5 @@ public class DocumentRetrievalService
             .ToList();
     }
 }
+
 

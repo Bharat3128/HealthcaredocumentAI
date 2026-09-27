@@ -8,11 +8,11 @@ namespace Healthcare.Api.Services;
 public class EmbeddingBackfillService
 {
     private readonly HealthcareDbContext _dbContext;
-    private readonly EmbeddingService _embeddingService;
+    private readonly IEmbeddingService _embeddingService;
 
     public EmbeddingBackfillService(
         HealthcareDbContext dbContext,
-        EmbeddingService embeddingService)
+        IEmbeddingService embeddingService)
     {
         _dbContext = dbContext;
         _embeddingService = embeddingService;
@@ -81,3 +81,5 @@ public class EmbeddingBackfillService
         }
     }
 }
+
+

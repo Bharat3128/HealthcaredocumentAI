@@ -109,12 +109,20 @@ if (useAzureOpenAI)
     builder.Services.AddScoped<
         IChatService,
         AzureOpenAIChatService>();
+
+    builder.Services.AddScoped<
+        IEmbeddingService,
+        AzureOpenAIEmbeddingService>();
 }
 else
 {
     builder.Services.AddScoped<IChatService>(
         serviceProvider =>
             serviceProvider.GetRequiredService<OllamaService>());
+
+    builder.Services.AddScoped<IEmbeddingService>(
+        serviceProvider =>
+            serviceProvider.GetRequiredService<EmbeddingService>());
 }
 
 builder.Services.AddScoped<RagService>();
@@ -200,6 +208,7 @@ app.Run();
 
 
 public partial class Program { }
+
 
 
 

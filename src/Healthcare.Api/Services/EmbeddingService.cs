@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 
 namespace Healthcare.Api.Services;
 
-public class EmbeddingService
+public class EmbeddingService : IEmbeddingService
 {
     private readonly HttpClient _httpClient;
     private readonly OllamaOptions _options;
@@ -115,6 +115,7 @@ public class OllamaEmbeddingResponse
 {
     public List<List<float>> Embeddings { get; set; } = new();
 }
+
 
 
 

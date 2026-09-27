@@ -16,7 +16,7 @@ private readonly IWebHostEnvironment _environment;
     private readonly StructuredExtractionService _structuredExtractionService;
     private readonly DocumentValidationService _validationService;
     private readonly DocumentChunkingService _chunkingService;
-    private readonly EmbeddingService _embeddingService;
+    private readonly IEmbeddingService _embeddingService;
 
     public DocumentService(
         IWebHostEnvironment environment,
@@ -26,7 +26,7 @@ private readonly IWebHostEnvironment _environment;
         StructuredExtractionService structuredExtractionService,
         DocumentValidationService validationService,
         DocumentChunkingService chunkingService,
-        EmbeddingService embeddingService,
+        IEmbeddingService embeddingService,
         Healthcare.Api.Storage.IFileStorageService fileStorageService)
     {
         
@@ -225,6 +225,7 @@ _environment = environment;
         return document;
     }
 }
+
 
 
 
