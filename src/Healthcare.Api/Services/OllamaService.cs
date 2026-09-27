@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 
 namespace Healthcare.Api.Services;
 
-public class OllamaService
+public class OllamaService : IChatService
 {
     private readonly HttpClient _httpClient;
     private readonly OllamaOptions _options;
@@ -86,3 +86,4 @@ public class OllamaService
         }
     }
 }
+

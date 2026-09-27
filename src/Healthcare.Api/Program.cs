@@ -98,6 +98,25 @@ builder.Services.AddHttpClient<EmbeddingService>((serviceProvider, client) =>
             options.TimeoutSeconds);
 });
 builder.Services.AddScoped<EmbeddingBackfillService>();
+builder.Services.Configure<AzureOpenAIOptions>(
+    builder.Configuration.GetSection("AzureOpenAI"));
+
+var useAzureOpenAI =
+    builder.Configuration.GetValue<bool>("AzureOpenAI:Enabled");
+
+if (useAzureOpenAI)
+{
+    builder.Services.AddScoped<
+        IChatService,
+        AzureOpenAIChatService>();
+}
+else
+{
+    builder.Services.AddScoped<IChatService>(
+        serviceProvider =>
+            serviceProvider.GetRequiredService<OllamaService>());
+}
+
 builder.Services.AddScoped<RagService>();
 
 builder.Services.AddHttpClient<OllamaService>((serviceProvider, client) =>
@@ -181,6 +200,7 @@ app.Run();
 
 
 public partial class Program { }
+
 
 
 

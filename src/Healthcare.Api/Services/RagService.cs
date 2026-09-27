@@ -20,16 +20,16 @@ public class RagResponse
 public class RagService
 {
     private readonly DocumentRetrievalService _retrievalService;
-    private readonly OllamaService _ollamaService;
+    private readonly IChatService _chatService;
     private readonly RagOptions _options;
 
     public RagService(
         DocumentRetrievalService retrievalService,
-        OllamaService ollamaService,
+        IChatService chatService,
         IOptions<RagOptions> options)
     {
         _retrievalService = retrievalService;
-        _ollamaService = ollamaService;
+        _chatService = chatService;
         _options = options.Value;
     }
 
@@ -68,7 +68,7 @@ public class RagService
                 result.Content));
 
         var answer =
-            await _ollamaService.GenerateAnswerAsync(
+            await _chatService.GenerateAnswerAsync(
                 question,
                 context,
                 cancellationToken);
@@ -121,4 +121,5 @@ public class RagService
         return clean[..maxLength] + "...";
     }
 }
+
 
