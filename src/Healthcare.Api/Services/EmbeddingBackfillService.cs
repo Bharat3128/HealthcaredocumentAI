@@ -73,7 +73,7 @@ public class EmbeddingBackfillService
                     chunk.EmbeddingJson);
 
             return existing == null ||
-                   existing.Length != 768;
+                   existing.Length == 0;
         }
         catch
         {
@@ -81,5 +81,6 @@ public class EmbeddingBackfillService
         }
     }
 }
+
 
 
